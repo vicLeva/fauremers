@@ -1,0 +1,9 @@
+[package]
+name = "fauremers"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+seq_io = "0.3.4"
+murmurhash32 = "0.3.1"
+crumsort = "0.1.0"
