@@ -28,7 +28,7 @@ def process_sequence(seq, k, step, f_out):
     for i in range(0, len(seq) - k + 1, step):
         sub = seq[i:i + k]
         if is_valid_dna(sub):
-            f_out.write(f">query_{written}_{i}\n{mutate(sub, 0.01)}\n")
+            f_out.write(f">query_{written}_{i}\n{mutate(sub, 0.005)}\n") #1/200 mutation rate
             written += 1
     return written
 
