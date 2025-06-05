@@ -8,6 +8,7 @@ use crate::kmers::kmers::{add_kmers, query_kmers};
 
 const QUERIES_PATH: &str = "/home/vlevallo/documents/rusty/fauremers/queries.fasta";
 
+#[derive(Debug)]
 pub struct Config {
     pub file_path: String,
     pub order: usize,
@@ -105,7 +106,7 @@ pub fn run_expes(config: Config) -> Result<(), Box<dyn std::error::Error>> {
     //FAUREMERS=================================================================
     for order in (5..=50).step_by(5) {
         for c_ratio in (1..=10).map(|i| i as f64 * 0.05) {
-            let t = Thresholds::new(config.c_ratio);
+            let t = Thresholds::new(c_ratio);
             println!("Running Fauremers with order: {}, c_ratio: {}", order, c_ratio);
         
 
