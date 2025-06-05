@@ -6,11 +6,10 @@ pub mod kmers;
 use crate::fauremers::fauremers::{add_fauremers, Thresholds, query_fauremers};
 use crate::kmers::kmers::{add_kmers, query_kmers};
 
-const QUERIES_PATH: &str = "/home/vlevallo/documents/rusty/fauremers/queries.fasta";
-
 #[derive(Debug)]
 pub struct Config {
     pub file_path: String,
+    pub queries_path: String,
     pub order: usize,
     pub k: usize,
     pub c_ratio: f64,
@@ -22,26 +21,32 @@ impl Config{
 
         let file_path = match args.next() {
             Some(arg) => arg,
-            None => return Err("Didn't get a file path (cargo run -- <file_path> <order> <c_ratio> <k>)"),
+            None => return Err("Didn't get a file path (cargo run -- <file_path> <queries_path> <order> <c_ratio> <k>)"),
+        };
+
+        let queries_path = match args.next() {
+            Some(arg) => arg,
+            None => return Err("Didn't get a queries file path (cargo run -- <file_path> <queries_path> <order> <c_ratio> <k>)"),
         };
 
         let order = match args.next() {
             Some(arg) => arg.parse::<usize>().unwrap(),
-            None => return Err("Didn't get an order (cargo run -- <file_path> <order> <c_ratio> <k>)"),
+            None => return Err("Didn't get an order (cargo run -- <file_path> <queries_path> <order> <c_ratio> <k>)"),
         };
 
         let c_ratio = match args.next() {
             Some(arg) => arg.parse::<f64>().unwrap(),
-            None => return Err("Didn't get a compression ratio (cargo run -- <file_path> <order> <c_ratio> <k>)"),
+            None => return Err("Didn't get a compression ratio (cargo run -- <file_path> <queries_path> <order> <c_ratio> <k>)"),
         };
 
         let k = match args.next() {
             Some(arg) => arg.parse::<usize>().unwrap(),
-            None => return Err("Didn't get a k value (cargo run -- <file_path> <order> <c_ratio> <k>)"),
+            None => return Err("Didn't get a k value (cargo run -- <file_path> <queries_path> <order> <c_ratio> <k>)"),
         };
 
         Ok(Config {
             file_path,
+            queries_path,
             order,
             k,
             c_ratio,
@@ -68,7 +73,7 @@ pub fn run(config: Config) -> Result<(), Box<dyn std::error::Error>> {
         add_fauremers(&config, &t, &mut fauremers_index, &s);
     }
 
-    let queries: Vec<Vec<u8>> = get_queries(QUERIES_PATH);
+    let queries: Vec<Vec<u8>> = get_queries(config.queries_path.as_str());
     let mut avg_fauremers: f64 = 0.0;
     let mut avg_kmers: f64 = 0.0;
     for query in &queries {
@@ -82,7 +87,7 @@ pub fn run(config: Config) -> Result<(), Box<dyn std::error::Error>> {
 }
 
 pub fn run_expes(config: Config) -> Result<(), Box<dyn std::error::Error>> {
-    let queries: Vec<Vec<u8>> = get_queries(QUERIES_PATH);
+    let queries: Vec<Vec<u8>> = get_queries(config.queries_path.as_str());
 
     let mut reader = Reader::from_path(&config.file_path).unwrap();
     
@@ -112,6 +117,7 @@ pub fn run_expes(config: Config) -> Result<(), Box<dyn std::error::Error>> {
 
             let config = Config {
                 file_path: config.file_path.clone(),
+                queries_path: config.queries_path.clone(),
                 order,
                 k: config.k,
                 c_ratio,
