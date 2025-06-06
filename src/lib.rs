@@ -163,16 +163,18 @@ pub fn write_results(
     index_size: usize,
     results: Vec<f64>,
 ) -> std::io::Result<()> {
-    let file_name = format!("results_k{}.txt", config.k);
+    //type;k;order;c_ratio;size;values
+
+    let file_name = format!("results.csv");
     let mut file = OpenOptions::new()
         .create(true)
         .append(true)
         .open(file_name)?;
 
     if fauremers {
-        write!(file, "{},{},{};{};", config.order, config.c_ratio, config.k, index_size)?;
+        write!(file, "fauremer;{};{};{};{};", config.order, config.c_ratio, config.k, index_size)?;
     } else {
-        write!(file, "{};{};", config.k, index_size)?;
+        write!(file, "kmer;{};;;{};", config.k, index_size)?;
     }
 
     for i in results.iter() {
