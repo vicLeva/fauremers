@@ -13,6 +13,7 @@ To do so : kmers or fauremers are collected from the sequences and searched insi
 
 ### k=10
 
+![Alt text](figs/boxplot_k10.png)
 [[https://github.com/vicLeva/fauremers/tree/master/figs/boxplot_k10.png]]
 [[https://github.com/vicLeva/fauremers/tree/master/figs/histogram_k10.png]]
 
