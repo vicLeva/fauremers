@@ -46,13 +46,13 @@ def mutate(seq, mutation_rate):
     return mutated_seq.decode()
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4:
-        print("Usage: python extract_queries.py <input.fasta> <step> <query_length>")
+    if len(sys.argv) != 5:
+        print("Usage: python collect_queries.py <input.fasta> <step> <query_length> <output.fasta>")
         sys.exit(1)
 
     input_file = sys.argv[1]
     step = int(sys.argv[2])
     query_len = int(sys.argv[3])
-    output_file = "queries.fasta"
+    output_file = sys.argv[4]
 
     extract_queries(input_file, output_file, query_len, step)
